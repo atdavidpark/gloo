@@ -6,7 +6,6 @@ import (
 	udpa_type_v1 "github.com/cncf/udpa/go/udpa/type/v1"
 	"github.com/envoyproxy/go-control-plane/pkg/conversion"
 	"github.com/golang/protobuf/proto"
-	gogoproto "github.com/golang/protobuf/proto"
 	goproto "github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes"
 	pany "github.com/golang/protobuf/ptypes/any"
@@ -52,7 +51,7 @@ func MustAnyToMessage(a *pany.Any) proto.Message {
 }
 
 // gogoprotos converted directly to goproto any can't be marshalled unless you wrap
-// the contents of the gogoproto in a typed struct
+// the contents of the goproto in a typed struct
 func MustGogoMessageToAnyGoProto(msg proto.Message) *pany.Any {
 	any, err := GogoMessageToAnyGoProto(msg)
 	if err != nil {
@@ -62,7 +61,7 @@ func MustGogoMessageToAnyGoProto(msg proto.Message) *pany.Any {
 }
 
 // gogoprotos converted directly to goproto any can't be marshalled unless you wrap
-// the contents of the gogoproto in a typed struct
+// the contents of the goproto in a typed struct
 func GogoMessageToAnyGoProto(msg proto.Message) (*pany.Any, error) {
 	configStruct, err := conversion.MessageToStruct(msg)
 	if err != nil {
@@ -82,9 +81,7 @@ func GogoMessageToAnyGoProto(msg proto.Message) (*pany.Any, error) {
 func protoToMessageName(msg proto.Message) (string, error) {
 	typeUrlPrefix := "type.googleapis.com/"
 
-	if s := gogoproto.MessageName(msg); s != "" {
-		return typeUrlPrefix + s, nil
-	} else if s := goproto.MessageName(msg); s != "" {
+	if s := goproto.MessageName(msg); s != "" {
 		return typeUrlPrefix + s, nil
 	}
 	return "", fmt.Errorf("can't determine message name")
@@ -98,7 +95,7 @@ func protoToMessageBytes(msg proto.Message) ([]byte, error) {
 }
 
 func protoToMessageBytesGogo(msg proto.Message) ([]byte, error) {
-	b := gogoproto.NewBuffer(nil)
+	b := goproto.NewBuffer(nil)
 	b.SetDeterministic(true)
 	err := b.Marshal(msg)
 	return b.Bytes(), err

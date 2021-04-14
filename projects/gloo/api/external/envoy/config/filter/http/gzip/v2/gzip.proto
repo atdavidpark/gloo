@@ -30,12 +30,10 @@ message Gzip {
         RLE = 3;
     }
 
-    message CompressionLevel {
-        enum Enum {
-            DEFAULT = 0;
-            BEST = 1;
-            SPEED = 2;
-        }
+    enum CompressionLevel {
+        COMPRESSION_DEFAULT = 0;
+        COMPRESSION_BEST = 1;
+        COMPRESSION_SPEED = 2;
     }
 
     // Value from 1 to 9 that controls the amount of internal memory used by zlib. Higher values
@@ -50,7 +48,7 @@ message Gzip {
     // higher latency, "SPEED" provides lower compression with minimum impact on response time.
     // "DEFAULT" provides an optimal result between speed and compression. This field will be set to
     // "DEFAULT" if not specified.
-    CompressionLevel.Enum compression_level = 3 [(validate.rules).enum = {defined_only: true}];
+    CompressionLevel compression_level = 3 [(validate.rules).enum = {defined_only: true}];
 
     // A value used for selecting the zlib compression strategy which is directly related to the
     // characteristics of the content. Most of the time "DEFAULT" will be the best choice, though
