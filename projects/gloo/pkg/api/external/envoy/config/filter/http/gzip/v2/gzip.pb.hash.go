@@ -128,19 +128,3 @@ func (m *Gzip) Hash(hasher hash.Hash64) (uint64, error) {
 
 	return hasher.Sum64(), nil
 }
-
-// Hash function
-func (m *Gzip_CompressionLevel) Hash(hasher hash.Hash64) (uint64, error) {
-	if m == nil {
-		return 0, nil
-	}
-	if hasher == nil {
-		hasher = fnv.New64()
-	}
-	var err error
-	if _, err = hasher.Write([]byte("solo.io.envoy.config.filter.http.gzip.v2.github.com/solo-io/gloo/projects/gloo/pkg/api/external/envoy/config/filter/http/gzip/v2.Gzip_CompressionLevel")); err != nil {
-		return 0, err
-	}
-
-	return hasher.Sum64(), nil
-}
